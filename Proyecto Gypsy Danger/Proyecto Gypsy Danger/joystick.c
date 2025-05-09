@@ -14,3 +14,15 @@ void joystick_init() {
 	ADMUX = (1 << REFS0); // AVcc como referencia
 	ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); // Enable, prescaler 128
 }
+
+uint16_t joystick_read(joystick_channel_t channel) {
+	if (channel >= NUM_JOYSTICKS) return 0;
+	ADMUX = (ADMUX & 0xF0) | channel;
+	ADCSRA |= (1 << ADSC);
+	while(ADCSRA & (1 << ADSC));
+	return ADC;
+}
+
+void joystick_update_servos() {
+	
+}
