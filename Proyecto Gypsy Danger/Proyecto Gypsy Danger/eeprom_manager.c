@@ -19,3 +19,12 @@ void eeprom_init() {
 		}
 	}
 }
+
+void eeprom_save_position(uint8_t pos_num) {
+	if(pos_num >= NUM_POSITIONS) return;
+	for(uint8_t servo = 0, servo < NUM_SERVOS; servo++) {
+		uint16_t pos = servo_get_position(servo);
+		eeprom_data[pos_num][servo] = (uint8_t)(pos >> 2); // Almacenar como byte
+		eeprom_write_byte((uint8_t*)(pos_num * NUM_SERVOS + servo), eeprom_data[pos_num][servo]);
+	}
+}
