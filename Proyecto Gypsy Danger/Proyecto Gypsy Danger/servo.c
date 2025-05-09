@@ -21,4 +21,10 @@ void servo_init(){
 	TCCR1A = (1 << COM1A1) | (1 << COM1B1) | (1 << WGM00);
 	TCCR1B = (1 << WGM13) | (1 << WGM12) | (1 << CS11); // Prescales 8, en modo Fast PWM ICR1
 	ICR1 = 39999; // Periodo de 20ms
+	
+	// Establecer pines como salida
+	DDRD |= (1 << SERVO_HEAD_H_PIN) | (1 << SERVO_HEAD_V_PIN);
+	DDRB |= (1 << SERVO_ARM_L_PIN) | (1 << SERVO_ARM_R_PIN);
+	
+	
 }
