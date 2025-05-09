@@ -21,8 +21,11 @@
 #define	JOY_ARM_L_ADC		2
 #define	JOY_ARM_R_ADC		3
 
+// Botones
+#define BTN_SAVE_PIN		PD2
+#define BTN_MODE_PIN		PD3
 
-
-
+// LED
+#define LED_MODE_PIN		PD4
 
 #endif /* PIN_DEFINITIONS_H_ */
