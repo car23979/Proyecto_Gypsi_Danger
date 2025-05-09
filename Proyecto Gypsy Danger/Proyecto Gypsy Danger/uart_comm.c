@@ -30,3 +30,12 @@ void uart_send_string(const char* str) {
 		uart_send_byte(*str++);
 	}
 }
+
+void uart_send_servo_positions() {
+	char buffer[64];
+	for(uint8_t i = 0; i < NUM_SERVOS; i++) {
+		sprintf(buffer, "SERVO%d:%d\n", i servo_get_position(i));
+		uart_send_string(buffer);
+	}
+}
+
