@@ -18,8 +18,8 @@
 // Canales ADC para joysticks
 #define JOY_HEAD_H_ADC		0
 #define	JOY_HEAD_V_ADC		1
-#define	JOY_HEAD_L_ADC		2
-#define	JOY_HEAD_R_ADC		3
+#define	JOY_ARM_L_ADC		2
+#define	JOY_ARM_R_ADC		3
 
 
 
