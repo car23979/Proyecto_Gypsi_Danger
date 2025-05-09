@@ -49,3 +49,21 @@ uint16_t servo_get_position(servo_channel_t channel) {
 	return servo_positions[channel];
 }
 
+static void servo_update(servo_channel_t channel) {
+	switch(channel) {
+		case SERVO_HEAD_H:
+			OCR0B = (servo_positions[channel] - 1000) >> 2;
+			break;
+		case SERVO_HEAD_V:
+			OCR0A = (servo_positions[channel] - 1000) >> 2;
+			break;
+		case SERVO_ARM_L:
+			OCR1A = servo_positions[channel];
+			break;
+		case SERVO_ARM_R:
+			OCR1B = servo_positions[channel];
+			break;
+		default:
+			break;
+	}
+}
