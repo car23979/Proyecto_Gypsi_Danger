@@ -67,3 +67,9 @@ static void servo_update(servo_channel_t channel) {
 			break;
 	}
 }
+
+static void servo_update_all() {
+	for(uint8_t i = 0; i < NUM_SERVOS; i++) {
+		servo_update(i);
+	}
+}
