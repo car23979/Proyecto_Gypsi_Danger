@@ -39,3 +39,19 @@ void uart_send_servo_positions() {
 	}
 }
 
+uint8_t uart_receive_command(char* buffer, uint8_t buffer_size) {
+	static uint8_t idx = 0;
+	char c;
+	while((UCSR0A & (1 << RXC0))) {
+		c = UDR0;
+		if (c == '\r' || c == '\n'){
+			buffer[idx] = '\0';
+			idx = 0;
+			return 1;
+		}
+		if(idx < buffer_size - 1) {
+			buffer[idx++] = c;
+		}
+	}
+	return 0;
+}
