@@ -9,8 +9,9 @@
 #ifndef GYPSY_DANGER_H_
 #define GYPSY_DANGER_H_
 
-
-
+// Definiciones comunes
+#define F_CPU 16000000UL
+#include <util/delay.h>
 
 
 #endif /* GYPSY_DANGER_H_ */
