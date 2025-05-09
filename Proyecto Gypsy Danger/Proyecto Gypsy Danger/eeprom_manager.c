@@ -36,3 +36,8 @@ void eeprom_load_position(uint8_t pos_num){
 		servo_set_position(servo, pos);
 	}
 }
+
+uint8_t eeprom_get_position_data(uint8_t pos_num, uint8_t servo_num) {
+	if(pos_num >= NUM_POSITIONS || servo_num >= NUM_SERVOS) return 0;
+	return eeprom_data[pos_num][servo_num];
+}
