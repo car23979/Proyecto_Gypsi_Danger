@@ -26,5 +26,9 @@ void servo_init(){
 	DDRD |= (1 << SERVO_HEAD_H_PIN) | (1 << SERVO_HEAD_V_PIN);
 	DDRB |= (1 << SERVO_ARM_L_PIN) | (1 << SERVO_ARM_R_PIN);
 	
-	
+	// Posiciones iniciales (centro)
+	for(uint8_t i = 0; i < NUM_SERVOS; i++) {
+		servo_positions[i] = 1500; // 1.5ms (posición central)
+	}
+	servo_update_all();
 }
