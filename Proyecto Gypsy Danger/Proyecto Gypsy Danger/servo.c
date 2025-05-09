@@ -44,3 +44,8 @@ void servo_set_position(servo_channel_t channel, uint16_t position) {
 	servo_update(channel);
 }
 
+uint16_t servo_get_position(servo_channel_t channel) {
+	if(channel >= NUM_SERVOS) return 0;
+	return servo_positions[channel];
+}
+
