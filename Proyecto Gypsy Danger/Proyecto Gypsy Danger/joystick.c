@@ -24,5 +24,10 @@ uint16_t joystick_read(joystick_channel_t channel) {
 }
 
 void joystick_update_servos() {
-	
+	for(uint8_t i = 0; i < NUM_JOYSTICKS; i++){
+		uint16_t adc_value = joystick_read();
+		// Mapear ADC (0-1023) a rango servo (1000-2000 us)
+		uint16_t servo_pos = (adc_value >> 2) + 1000;
+		servo_set_position(i, servo_pos);
+	}
 }
