@@ -19,3 +19,8 @@ void uart_init(uint32_t baud_rate) {
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0);
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // 8-bit data
 }
+
+void uart_send_byte(uint8_t data) {
+	while(!(UCSR0A & (1 << UDRE0)));
+	UDR0 = data;
+}
