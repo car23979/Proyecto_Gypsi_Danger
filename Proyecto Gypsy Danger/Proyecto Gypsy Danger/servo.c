@@ -32,3 +32,15 @@ void servo_init(){
 	}
 	servo_update_all();
 }
+
+void servo_set_position(servo_channel_t channel, uint16_t position) {
+	if(channel >= NUM_SERVOS) return;
+	
+	// Limitar rango (1000 - 2000 ?s)
+	if(position < 1000) position = 1000;
+	if(position > 2000) position = 2000;
+	
+	servo_positions[channel] = position;
+	servo_update(channel);
+}
+
