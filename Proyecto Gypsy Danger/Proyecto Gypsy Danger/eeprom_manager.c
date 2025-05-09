@@ -28,3 +28,11 @@ void eeprom_save_position(uint8_t pos_num) {
 		eeprom_write_byte((uint8_t*)(pos_num * NUM_SERVOS + servo), eeprom_data[pos_num][servo]);
 	}
 }
+
+void eeprom_load_position(uint8_t pos_num){
+	if(pos_num >= NUM_POSITIONS) return;
+	for(uint8_t servo = 0; servo < NUM_SERVOS; servo++){
+		uint16_t pos = (uint16_t)eeprom_data[pos_num][servo] << 2;
+		servo_set_position(servo, pos);
+	}
+}
