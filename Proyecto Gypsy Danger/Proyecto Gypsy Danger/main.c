@@ -25,8 +25,9 @@ typedef enum {
 	NUM_MODES	// Este valos no es necesario manejarlo en el switch
 } operation_mode_t;
 
-static volatile operation_mode_t current_mode = MODE_MANUAL;
-static volatile uint8_t eeprom_playback_pos = 0;
+// Variables globales compartidas
+volatile operation_mode_t current_mode = MODE_MANUAL;
+volatile uint8_t eeprom_playback_pos = 0;
 
 void gpio_init() {
 	// Configurar botones como entrada con pull-up
@@ -37,14 +38,17 @@ void gpio_init() {
 void update_led() {
 	switch(current_mode) {
 		case MODE_MANUAL:
-		led_rgb_set(LED_RED);  // Rojo para modo manual
-		break;
+			led_rgb_set(LED_RED);  // Rojo para modo manual
+			break;
 		case MODE_EEPROM:
-		led_rgb_set(LED_BLUE); // Azul para modo EEPROM
-		break;
+			led_rgb_set(LED_BLUE); // Azul para modo EEPROM
+			break;
 		case MODE_UART:
-		led_rgb_set(LED_GREEN); // Verde para modo UART
-		break;
+			led_rgb_set(LED_GREEN); // Verde para modo UART
+			break;
+		// NUM_MODES no necesita caso, es solo para conteo
+		default:
+			break; // Manejar cualquier caso no esperado
 	}
 }
 

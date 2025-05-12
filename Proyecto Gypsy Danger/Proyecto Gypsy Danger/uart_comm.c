@@ -18,6 +18,32 @@ extern volatile uint8_t current_mode;
 extern volatile uint8_t eeprom_playback_pos;
 extern const uint8_t NUM_MODES;
 
+// Implementación de uart_available
+uint8_t uart_available(void) {
+	return (UCSR0A & (1 << RXC0));
+}
+
+// Implementación de uart_read_line
+uint8_t uart_read_line(char* buffer, uint8_t buffer_size) {
+	static uint8_t idx = 0;
+	char c;
+	
+	while(uart_available()) {
+		c = UDR0;
+		
+		if(c == '\r' || c == '\n') {
+			buffer[idx] = '\0';
+			idx = 0;
+			return 1;
+		}
+		
+		if(idx < buffer_size - 1) {
+			buffer[idx++] = c;
+		}
+	}
+	return 0;
+}
+
 void process_uart_command(char* command) {
 	if(strncmp(command, "MODE:", 5) == 0) {
 		uint8_t mode = atoi(command + 5);
