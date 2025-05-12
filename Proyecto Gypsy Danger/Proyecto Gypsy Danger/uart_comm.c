@@ -9,6 +9,7 @@
 #include "servo.h"
 #include "eeprom_manager.h"
 #include <avr/io.h>
+#include <stdio.h> // Para sprintf
 #include <string.h>
 #include <util/delay.h>
 
@@ -32,9 +33,10 @@ void uart_send_string(const char* str) {
 }
 
 void uart_send_servo_positions() {
-	char buffer[64];
+	char buffer[32];
 	for(uint8_t i = 0; i < NUM_SERVOS; i++) {
-		sprintf(buffer, "SERVO%d:%d\n", i servo_get_position(i));
+		// Formato seguro usando snprintf
+		snprintf(buffer, sizeof(buffer), "S%d:%u\n", i, (unsigned int)servo_get_position(i));
 		uart_send_string(buffer);
 	}
 }

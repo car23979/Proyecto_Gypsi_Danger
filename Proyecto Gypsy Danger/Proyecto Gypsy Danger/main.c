@@ -53,7 +53,7 @@ void update_led() {
 			if(counter % 200 == 0) { // Parpadeo rápido
 			PORTD ^= (1 << LED_MODE_PIN);
 			}
-		break;
+			break;
 		default:
 		break;
 	}
@@ -90,7 +90,6 @@ int main(void) {
 	joystick_init();
 	eeprom_init();
 	uart_init(9600);
-	adafruit_io_init();
 	
 	// Bucle principal
 	while(1) {
@@ -109,8 +108,8 @@ int main(void) {
 			break;
 			
 			case MODE_UART:
-			adafruit_io_process();
-			adafruit_io_send_status();
+			
+			
 			break;
 		}
 	}
