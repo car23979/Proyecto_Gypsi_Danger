@@ -117,6 +117,8 @@ int main(void) {
 				uart_send_servo_positions(); // Enviar estado actual
 				_delay_ms(100);
 				break;
+			default:
+				break;
 		}
 	}
 	

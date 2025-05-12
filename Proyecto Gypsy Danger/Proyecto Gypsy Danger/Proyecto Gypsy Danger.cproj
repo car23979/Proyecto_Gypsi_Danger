@@ -129,9 +129,6 @@
     <Compile Include="gypsi_danger.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="helpers.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="joystick.c">
       <SubType>compile</SubType>
     </Compile>

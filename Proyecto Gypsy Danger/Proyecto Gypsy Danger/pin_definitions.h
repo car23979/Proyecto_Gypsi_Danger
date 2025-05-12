@@ -27,8 +27,8 @@
 
 // LED
 #define LED_R_PIN			PB3
-#define LED_G_PIN			PC1
-#define LED_B_PIN			PC0
+#define LED_G_PIN			PB4
+#define LED_B_PIN			PB5
 
 // Estados del LED RGB
 #define LED_OFF        0, 0, 0
