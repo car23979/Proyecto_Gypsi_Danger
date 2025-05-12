@@ -5,21 +5,23 @@
  * Author : David Carranza
  */ 
 
-#include "gypsi_danger.h"
-#include "lib/servo/servo.h"
-#include "lib/joystick/joystick.h"
-#include "lib/eeprom_manager/eeprom_manager.h"
-#include "lib/uart_comm/uart_comm.h"
-#include "lib/adafruit_io/adafruit_io.h"
-#include "utils/pin_definitions.h"
+#define  F_CPU 16000000UL
+
 #include <avr/io.h>
 #include <util/delay.h>
+#include "gypsi_danger.h"
+#include "servo.h"
+#include "joystick.h"
+#include "eeprom_manager.h"
+#include "uart_comm.h"
+#include "pin_definitions.h"
+
 
 typedef enum {
 	MODE_MANUAL = 0,
 	MODE_EEPROM,
 	MODE_UART,
-	NUM_MODES
+	NUM_MODES	// Este valos no es necesario manejarlo en el switch
 } operation_mode_t;
 
 static volatile operation_mode_t current_mode = MODE_MANUAL;

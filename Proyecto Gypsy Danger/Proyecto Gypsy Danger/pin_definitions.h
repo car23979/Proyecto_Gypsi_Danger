@@ -26,6 +26,19 @@
 #define BTN_MODE_PIN		PD3
 
 // LED
-#define LED_MODE_PIN		PD4
+#define LED_R_PIN			PB3
+#define LED_G_PIN			PC1
+#define LED_B_PIN			PC0
+
+// Estados del LED RGB
+#define LED_OFF        0, 0, 0
+#define LED_RED        255, 0, 0
+#define LED_GREEN      0, 255, 0
+#define LED_BLUE       0, 0, 255
+#define LED_YELLOW     255, 255, 0
+#define LED_MAGENTA    255, 0, 255
+#define LED_CYAN       0, 255, 255
+#define LED_WHITE      255, 255, 255
+
 
 #endif /* PIN_DEFINITIONS_H_ */

@@ -22,5 +22,7 @@ typedef enum {
 void servo_init();
 void servo_set_position(servo_channel_t channel, uint16_t position);
 uint16_t servo_get_position(servo_channel_t channel);
+void servo_update(servo_channel_t channel);
+void servo_update_all();
 
 #endif /* SERVO_H_ */
