@@ -9,8 +9,11 @@
 #ifndef GYPSY_DANGER_H_
 #define GYPSY_DANGER_H_
 
-// Definiciones comunes
+// Definir F_CPU aquí si no está definido en el compilador
+#ifndef F_CPU
+#define F_CPU 16000000UL
+#endif
+
 #include <util/delay.h>
 
-
-#endif /* GYPSY_DANGER_H_ */
+#endif

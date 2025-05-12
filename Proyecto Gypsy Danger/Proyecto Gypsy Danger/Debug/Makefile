@@ -37,7 +37,6 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../adafruit_io.c \
 ../eeprom_manager.c \
 ../joystick.c \
 ../main.c \
@@ -52,7 +51,6 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-adafruit_io.o \
 eeprom_manager.o \
 joystick.o \
 main.o \
@@ -60,7 +58,6 @@ servo.o \
 uart_comm.o
 
 OBJS_AS_ARGS +=  \
-adafruit_io.o \
 eeprom_manager.o \
 joystick.o \
 main.o \
@@ -68,7 +65,6 @@ servo.o \
 uart_comm.o
 
 C_DEPS +=  \
-adafruit_io.d \
 eeprom_manager.d \
 joystick.d \
 main.d \
@@ -76,7 +72,6 @@ servo.d \
 uart_comm.d
 
 C_DEPS_AS_ARGS +=  \
-adafruit_io.d \
 eeprom_manager.d \
 joystick.d \
 main.d \
@@ -97,13 +92,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./adafruit_io.o: .././adafruit_io.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
 ./eeprom_manager.o: .././eeprom_manager.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0

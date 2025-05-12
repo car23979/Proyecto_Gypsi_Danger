@@ -14,6 +14,7 @@
 #include "joystick.h"
 #include "eeprom_manager.h"
 #include "uart_comm.h"
+#include "led_rgb.h"
 #include "pin_definitions.h"
 
 
@@ -31,30 +32,18 @@ void gpio_init() {
 	// Configurar botones como entrada con pull-up
 	DDRD &= ~((1 << BTN_SAVE_PIN) | (1 << BTN_MODE_PIN));
 	PORTD |= (1 << BTN_SAVE_PIN) | (1 << BTN_MODE_PIN);
-	
-	// Configurar LED como salida
-	DDRD |= (1 << LED_MODE_PIN);
 }
 
 void update_led() {
-	static uint16_t counter = 0;
-	counter++;
-	
 	switch(current_mode) {
 		case MODE_MANUAL:
-			PORTD |= (1 << LED_MODE_PIN); // LED siempre encendido
-			break;
+		led_rgb_set(LED_RED);  // Rojo para modo manual
+		break;
 		case MODE_EEPROM:
-			if(counter % 1000 == 0) { // Parpadeo lento
-			PORTD ^= (1 << LED_MODE_PIN);
-			}
-			break;
+		led_rgb_set(LED_BLUE); // Azul para modo EEPROM
+		break;
 		case MODE_UART:
-			if(counter % 200 == 0) { // Parpadeo rápido
-			PORTD ^= (1 << LED_MODE_PIN);
-			}
-			break;
-		default:
+		led_rgb_set(LED_GREEN); // Verde para modo UART
 		break;
 	}
 }
@@ -70,11 +59,19 @@ void check_buttons() {
 	if(last_btn_mode_state && !btn_mode_state) {
 		current_mode = (current_mode + 1) % NUM_MODES;
 		eeprom_playback_pos = 0;
+		update_led(); // Actualizar color LED inmediatamente
 		_delay_ms(50); // Debounce
 	}
 	
 	if(last_btn_save_state && !btn_save_state && current_mode == MODE_MANUAL) {
 		eeprom_save_position(eeprom_playback_pos);
+		// Feedback visual - parpadeo rápido
+		for(uint8_t i = 0; i < 3; i++) {
+			led_rgb_set(LED_WHITE);
+			_delay_ms(100);
+			led_rgb_set(LED_RED);
+			_delay_ms(100);
+		}
 		eeprom_playback_pos = (eeprom_playback_pos + 1) % NUM_POSITIONS;
 		_delay_ms(50); // Debounce
 	}
@@ -90,27 +87,32 @@ int main(void) {
 	joystick_init();
 	eeprom_init();
 	uart_init(9600);
+	led_rgb_init();
 	
 	// Bucle principal
 	while(1) {
 		check_buttons();
-		update_led();
 		
 		switch(current_mode) {
 			case MODE_MANUAL:
-			joystick_update_servos();
-			break;
+				joystick_update_servos();
+				break;
 			
 			case MODE_EEPROM:
-			eeprom_load_position(eeprom_playback_pos);
-			_delay_ms(1000); // Espera entre posiciones
-			eeprom_playback_pos = (eeprom_playback_pos + 1) % NUM_POSITIONS;
-			break;
+				eeprom_load_position(eeprom_playback_pos);
+				_delay_ms(1000); // Espera entre posiciones
+				eeprom_playback_pos = (eeprom_playback_pos + 1) % NUM_POSITIONS;
+				break;
 			
 			case MODE_UART:
-			
-			
-			break;
+				if(uart_available()) {
+					char buffer[32];
+					uart_read_line(buffer, sizeof(buffer));
+					process_uart_command(buffer);
+				}
+				uart_send_servo_positions(); // Enviar estado actual
+				_delay_ms(100);
+				break;
 		}
 	}
 	
