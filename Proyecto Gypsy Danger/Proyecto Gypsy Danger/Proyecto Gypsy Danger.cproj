@@ -138,6 +138,12 @@
     <Compile Include="joystick.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="led_rgb.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="led_rgb.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>

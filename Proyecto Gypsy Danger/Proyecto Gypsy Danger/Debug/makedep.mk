@@ -6,6 +6,8 @@ eeprom_manager.c
 
 joystick.c
 
+led_rgb.c
+
 main.c
 
 servo.c

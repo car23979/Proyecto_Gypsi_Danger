@@ -9,51 +9,47 @@
 #include "servo.h"
 #include "eeprom_manager.h"
 #include <avr/io.h>
-#include <stdio.h> // Para sprintf
 #include <string.h>
-#include <util/delay.h>
+#include <stdlib.h> // Para atoi()
+#include <stdio.h>	// Para snprintf()
 
-void uart_init(uint32_t baud_rate) {
-	uint16_t ubrr = F_CPU / 16 / baud_rate - 1;
-	UBRR0H = (uint8_t)(ubrr >> 8);
-	UBRR0L = (uint8_t)ubrr;
-	UCSR0B = (1 << RXEN0) | (1 << TXEN0);
-	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // 8-bit data
-}
+// Variables externas compartidas con main.c
+extern volatile uint8_t current_mode;
+extern volatile uint8_t eeprom_playback_pos;
+extern const uint8_t NUM_MODES;
 
-void uart_send_byte(uint8_t data) {
-	while(!(UCSR0A & (1 << UDRE0)));
-	UDR0 = data;
-}
-
-void uart_send_string(const char* str) {
-	while (*str) {
-		uart_send_byte(*str++);
-	}
-}
-
-void uart_send_servo_positions() {
-	char buffer[32];
-	for(uint8_t i = 0; i < NUM_SERVOS; i++) {
-		// Formato seguro usando snprintf
-		snprintf(buffer, sizeof(buffer), "S%d:%u\n", i, (unsigned int)servo_get_position(i));
-		uart_send_string(buffer);
-	}
-}
-
-uint8_t uart_receive_command(char* buffer, uint8_t buffer_size) {
-	static uint8_t idx = 0;
-	char c;
-	while((UCSR0A & (1 << RXC0))) {
-		c = UDR0;
-		if (c == '\r' || c == '\n'){
-			buffer[idx] = '\0';
-			idx = 0;
-			return 1;
-		}
-		if(idx < buffer_size - 1) {
-			buffer[idx++] = c;
+void process_uart_command(char* command) {
+	if(strncmp(command, "MODE:", 5) == 0) {
+		uint8_t mode = atoi(command + 5);
+		if(mode < NUM_MODES) {
+			current_mode = mode;
+			eeprom_playback_pos = 0;
 		}
 	}
-	return 0;
+	else if(strncmp(command, "MOVE:", 5) == 0) {
+		char* comma = strchr(command + 5, ',');
+		if(comma) {
+			*comma = '\0';
+			uint8_t servo = atoi(command + 5);
+			uint16_t pos = atoi(comma + 1);
+			if(servo < NUM_SERVOS) {
+				servo_set_position(servo, pos);
+			}
+		}
+	}
+	else if(strncmp(command, "SAVE:", 5) == 0) {
+		uint8_t pos = atoi(command + 5);
+		if(pos < NUM_POSITIONS) {
+			eeprom_save_position(pos);
+		}
+	}
+	else if(strncmp(command, "LOAD:", 5) == 0) {
+		uint8_t pos = atoi(command + 5);
+		if(pos < NUM_POSITIONS) {
+			eeprom_load_position(pos);
+		}
+	}
+	else if(strcmp(command, "STATUS") == 0) {
+		uart_send_servo_positions();
+	}
 }

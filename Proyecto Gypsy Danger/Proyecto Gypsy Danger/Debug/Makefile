@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../eeprom_manager.c \
 ../joystick.c \
+../led_rgb.c \
 ../main.c \
 ../servo.c \
 ../uart_comm.c
@@ -53,6 +54,7 @@ ASM_SRCS +=
 OBJS +=  \
 eeprom_manager.o \
 joystick.o \
+led_rgb.o \
 main.o \
 servo.o \
 uart_comm.o
@@ -60,6 +62,7 @@ uart_comm.o
 OBJS_AS_ARGS +=  \
 eeprom_manager.o \
 joystick.o \
+led_rgb.o \
 main.o \
 servo.o \
 uart_comm.o
@@ -67,6 +70,7 @@ uart_comm.o
 C_DEPS +=  \
 eeprom_manager.d \
 joystick.d \
+led_rgb.d \
 main.d \
 servo.d \
 uart_comm.d
@@ -74,6 +78,7 @@ uart_comm.d
 C_DEPS_AS_ARGS +=  \
 eeprom_manager.d \
 joystick.d \
+led_rgb.d \
 main.d \
 servo.d \
 uart_comm.d
@@ -100,6 +105,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./joystick.o: .././joystick.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./led_rgb.o: .././led_rgb.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
