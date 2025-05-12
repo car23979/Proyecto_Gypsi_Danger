@@ -42,17 +42,17 @@ void update_led() {
 	
 	switch(current_mode) {
 		case MODE_MANUAL:
-		PORTD |= (1 << LED_MODE_PIN); // LED siempre encendido
-		break;
+			PORTD |= (1 << LED_MODE_PIN); // LED siempre encendido
+			break;
 		case MODE_EEPROM:
-		if(counter % 1000 == 0) { // Parpadeo lento
+			if(counter % 1000 == 0) { // Parpadeo lento
 			PORTD ^= (1 << LED_MODE_PIN);
-		}
-		break;
+			}
+			break;
 		case MODE_UART:
-		if(counter % 200 == 0) { // Parpadeo rápido
+			if(counter % 200 == 0) { // Parpadeo rápido
 			PORTD ^= (1 << LED_MODE_PIN);
-		}
+			}
 		break;
 		default:
 		break;
