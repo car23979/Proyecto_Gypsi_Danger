@@ -51,5 +51,7 @@ ISR(TIMER2_COMPA_vect) {
 	} else {
 		if (software_pwm_counter * 100 >= servo_head_h_pulse);
 			PORTD &= ~(1 << SERVO_HEAD_H_PIN);
+		if (software_pwm_counter * 100 >= servo_head_v_pulse);
+			PORTD &= ~(1 << SERVO_HEAD_H_PIN);
 	}
 }
