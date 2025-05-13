@@ -19,7 +19,7 @@ void servo_init(){
 	TCCR1B = (1 << WGM13) | (1 << WGM12); // Prescales 8
 	ICR1 = 39999; // TOP = 20ms a 16MHz/8
 	
-	// Timer2 para PWM software en cabeza
+	// Timer2 para PWM software en hombro
 	DDRD |= (1 << PD5) | (1 << PD6);	// Salida
 	TCCR2A = (1 << WGM21);				// CTC
 	TCCR2B = (1 << CS22);				// Prescaler 64
@@ -28,43 +28,28 @@ void servo_init(){
 	sei();	
 }
 
-void servo_set_position(servo_channel_t channel, uint16_t position) {
-	if(channel >= NUM_SERVOS) return;
+void servo_set_position(uint8_t pin, uint16_t adc_value) {
+	uint16_t pulse = 1000 + ((uint32_t)adc_value * 1000 / 1023); // 1000 a 2000 us
 	
-	// Limitar rango (1000 - 2000 ?s)
-	if(position < 1000) position = 1000;
-	if(position > 2000) position = 2000;
-	
-	servo_positions[channel] = position;
-	servo_update(channel);
+	switch(pin) {
+			case SERVO_ARM_L_PIN: OCR1A = (pulse * 2); break;  // 0.5us = 1 cuenta
+			case SERVO_ARM_R_PIN: OCR1B = (pulse * 2); break;
+			case SERVO_HEAD_H_PIN: servo_head_h_pulse = pulse; break;
+			case SERVO_HEAD_V_PIN: servo_head_v_pulse = pulse; break;
+			default: break;
+		}
 }
 
-uint16_t servo_get_position(servo_channel_t channel) {
-	if(channel >= NUM_SERVOS) return 0;
-	return servo_positions[channel];
-}
+// Variables auxiliares para el software PWM
+volatile uint8_t software_pwm_counter = 0;
 
-void servo_update(servo_channel_t channel) {
-	switch(channel) {
-		case SERVO_HEAD_H:
-			OCR0B = (servo_positions[channel] - 1000) >> 2;
-			break;
-		case SERVO_HEAD_V:
-			OCR0A = (servo_positions[channel] - 1000) >> 2;
-			break;
-		case SERVO_ARM_L:
-			OCR1A = servo_positions[channel];
-			break;
-		case SERVO_ARM_R:
-			OCR1B = servo_positions[channel];
-			break;
-		default:
-			break;
-	}
-}
- // Actualiza servos
-void servo_update_all() {
-	for(uint8_t i = 0; i < NUM_SERVOS; i++) {
-		servo_update(i);
+ISR(TIMER2_COMPA_vect) {
+	software_pwm_counter++;
+	if (software_pwm_counter >= 20) software_pwm_counter = 0;
+	if (software_pwm_counter == 0) {
+		PORTD |= (1 << SERVO_HEAD_H_PIN) | (1 << SERVO_HEAD_V_PIN);
+	} else {
+		if (software_pwm_counter * 100 >= servo_head_h_pulse)
+			PORTD &= (1 << SERVO_HEAD_H_PIN)
 	}
 }
