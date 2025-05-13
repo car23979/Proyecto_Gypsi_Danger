@@ -32,12 +32,12 @@ void servo_set_position(uint8_t pin, uint16_t adc_value) {
 	uint16_t pulse = 1000 + ((uint32_t)adc_value * 1000 / 1023); // 1000 a 2000 us
 	
 	switch(pin) {
-			case SERVO_ARM_L_PIN: OCR1A = (pulse * 2); break;  // 0.5us = 1 cuenta
-			case SERVO_ARM_R_PIN: OCR1B = (pulse * 2); break;
-			case SERVO_HEAD_H_PIN: servo_head_h_pulse = pulse; break;
-			case SERVO_HEAD_V_PIN: servo_head_v_pulse = pulse; break;
-			default: break;
-		}
+		case SERVO_ARM_L_PIN: OCR1A = (pulse * 2); break;  // 0.5us = 1 cuenta
+		case SERVO_ARM_R_PIN: OCR1B = (pulse * 2); break;
+		case SERVO_HEAD_H_PIN: servo_head_h_pulse = pulse; break;
+		case SERVO_HEAD_V_PIN: servo_head_v_pulse = pulse; break;
+		default: break;
+	}
 }
 
 // Variables auxiliares para el software PWM
@@ -49,9 +49,9 @@ ISR(TIMER2_COMPA_vect) {
 	if (software_pwm_counter == 0) {
 		PORTD |= (1 << SERVO_HEAD_H_PIN) | (1 << SERVO_HEAD_V_PIN);
 	} else {
-		if (software_pwm_counter * 100 >= servo_head_h_pulse);
+		if (software_pwm_counter * 100 >= servo_head_h_pulse)
 			PORTD &= ~(1 << SERVO_HEAD_H_PIN);
-		if (software_pwm_counter * 100 >= servo_head_v_pulse);
+		if (software_pwm_counter * 100 >= servo_head_v_pulse)
 			PORTD &= ~(1 << SERVO_HEAD_H_PIN);
 	}
 }
