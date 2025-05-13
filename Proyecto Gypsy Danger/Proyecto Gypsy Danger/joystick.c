@@ -21,10 +21,10 @@ void joystick_init() {
 uint16_t joystick_read(joystick_channel_t channel) {
 	if(channel >= NUM_JOYSTICKS) return 0;
 	
-	ADMUX = (ADMUX & 0xF0) | channel;
-	ADCSRA |= (1 << ADSC);
-	while(ADCSRA & (1 << ADSC));
-	return ADC;
+	ADMUX = (ADMUX & 0xF0) | channel;	// Selecciona el canal ADC
+	ADCSRA |= (1 << ADSC);				// Iniciar conversión
+	while(ADCSRA & (1 << ADSC));		// Esperar a que la conversión termine
+	return ADC;							// Devolver el valor ADC
 }
 
 // Función para actualizar todos los servos según los joysticks
