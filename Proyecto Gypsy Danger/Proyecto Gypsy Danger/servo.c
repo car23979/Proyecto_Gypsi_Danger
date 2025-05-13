@@ -49,7 +49,7 @@ ISR(TIMER2_COMPA_vect) {
 	if (software_pwm_counter == 0) {
 		PORTD |= (1 << SERVO_HEAD_H_PIN) | (1 << SERVO_HEAD_V_PIN);
 	} else {
-		if (software_pwm_counter * 100 >= servo_head_h_pulse)
-			PORTD &= (1 << SERVO_HEAD_H_PIN)
+		if (software_pwm_counter * 100 >= servo_head_h_pulse);
+			PORTD &= ~(1 << SERVO_HEAD_H_PIN);
 	}
 }
