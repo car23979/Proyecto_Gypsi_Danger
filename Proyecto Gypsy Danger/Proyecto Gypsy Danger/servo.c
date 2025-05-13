@@ -14,10 +14,10 @@ volatile uint16_t servo_head_v_pulse = 1000;
 
 void servo_init(){
 	// Timer1 para servos de brazo (PB1 y PB2)
-	 
-	TCCR1A = (1 << COM0A1) | (1 << WGM01) | (1 << WGM00);
-	TCCR1B = (1 << CS01) | (1 << CS00);	// Prescales 64
-	
+	DDRB |= (1 << PB1) | (1 << PB2); 
+	TCCR1A = (1 << COM1A1) | (1 << COM1B1) | (1 << WGM11);
+	TCCR1B = (1 << WGM13) | (1 << WGM12); // Prescales 8
+	ICR1 = 39999; // TOP = 20ms a 16MHz/8
 	
 }
 
