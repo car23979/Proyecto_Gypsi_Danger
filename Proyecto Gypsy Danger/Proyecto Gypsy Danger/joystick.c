@@ -10,6 +10,14 @@
 #include "pin_definitions.h"
 #include <avr/io.h>
 
+// Mapeo entre joystick_channel_t y pines físicos de servos
+const uint8_t joystick_to_servo_pin[NUM_JOYSTICKS] = {
+	SERVO_HEAD_H_PIN,  // JOY_HEAD_H
+	SERVO_HEAD_V_PIN,  // JOY_HEAD_V
+	SERVO_ARM_L_PIN,   // JOY_ARM_L
+	SERVO_ARM_R_PIN    // JOY_ARM_R
+};
+
 // Función para inicializar el ADC
 void joystick_init() {
 	// Configurar el ADC (prescaler 64)
@@ -30,8 +38,8 @@ uint16_t joystick_read(joystick_channel_t channel) {
 // Función para actualizar todos los servos según los joysticks
 void joystick_update_servos() {
 	for(uint8_t i = 0; i < NUM_JOYSTICKS && i < NUM_SERVOS; i++) {
-		uint16_t adc_value = joystick_read(i); // Pasar el canal correctamente
-		uint16_t servo_pos = (adc_value >> 2) + 1000;
+		uint16_t adc_value = joystick_read(i); // Obtener el valor de ADC
+		uint16_t servo_pos = (adc_value >> 2) + 1000; // Mapeo de 0-1023 a 1000-2000us
 		servo_set_position((servo_channel_t)i, servo_pos);
 	}
 }
