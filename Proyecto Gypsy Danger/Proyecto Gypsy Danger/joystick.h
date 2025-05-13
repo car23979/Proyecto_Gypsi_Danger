@@ -12,10 +12,10 @@
 #include <stdint.h>
 
 typedef enum {
-	JOY_HEAD_H = 0,
-	JOY_HEAD_V,
-	JOY_ARM_L,
-	JOY_ARM_R,
+	JOY_HEAD_H = 0,		// Canal 0 - Hombro izquierdo
+	JOY_HEAD_V,			// Canal 1 - Hombro derecho
+	JOY_ARM_L,			// Canal 2 - Brazo izquierdo
+	JOY_ARM_R,			// Canal 3 - Brazo derecho
 	NUM_JOYSTICKS
 	} joystick_channel_t;
 
