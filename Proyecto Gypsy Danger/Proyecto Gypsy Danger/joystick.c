@@ -10,7 +10,14 @@
 #include "pin_definitions.h"
 #include <avr/io.h>
 
-// Función para leer un canal específico del joystick
+// Función para inicializar el ADC
+void joystick_init() {
+	// Configurar el ADC (prescaler 64)
+	ADMUX = 0x00;	// Seleccionar Vref como referencia ADC0
+	ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1); // Habilitar ADC y prescaler 64
+}
+
+// Función para leer el canal especifico del joystick
 uint16_t joystick_read(joystick_channel_t channel) {
 	if(channel >= NUM_JOYSTICKS) return 0;
 	
