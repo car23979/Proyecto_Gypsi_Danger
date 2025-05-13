@@ -19,6 +19,13 @@ void servo_init(){
 	TCCR1B = (1 << WGM13) | (1 << WGM12); // Prescales 8
 	ICR1 = 39999; // TOP = 20ms a 16MHz/8
 	
+	// Timer2 para PWM software en cabeza
+	DDRD |= (1 << PD5) | (1 << PD6);	// Salida
+	TCCR2A = (1 << WGM21);				// CTC
+	TCCR2B = (1 << CS22);				// Prescaler 64
+	OCR2A = 250;						// Cada -1ms a 16Mhz con preacaler 64
+	TIMSK2 = (1 << OCIE2A);				// Habilitar interrupción
+	sei();	
 }
 
 void servo_set_position(servo_channel_t channel, uint16_t position) {
