@@ -2,15 +2,15 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-eeprom_manager.c
+adc_config.c
 
-joystick.c
-
-led_rgb.c
+EEPROM.c
 
 main.c
 
-servo.c
+pwm_hard.c
 
-uart_comm.c
+pwm_soft.c
+
+uart.c
 

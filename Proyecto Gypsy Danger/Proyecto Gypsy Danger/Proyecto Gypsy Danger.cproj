@@ -120,43 +120,37 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="eeprom_manager.c">
+    <Compile Include="adc_config.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="eeprom_manager.h">
+    <Compile Include="adc_config.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="gypsi_danger.h">
+    <Compile Include="EEPROM.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="joystick.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="joystick.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="led_rgb.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="led_rgb.h">
+    <Compile Include="EEPROM.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="pin_definitions.h">
+    <Compile Include="pwm_hard.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="servo.c">
+    <Compile Include="pwm_hard.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="servo.h">
+    <Compile Include="pwm_soft.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="uart_comm.c">
+    <Compile Include="pwm_soft.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="uart_comm.h">
+    <Compile Include="uart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
